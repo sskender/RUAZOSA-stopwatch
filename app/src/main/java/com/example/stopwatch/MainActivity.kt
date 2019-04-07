@@ -33,11 +33,25 @@ class MainActivity : AppCompatActivity() {
 
     }
 
+    fun formatStopwatchTime(secondsInput: Int) {
+        val hours = secondsInput / 360
+        val minutes = (secondsInput % 360) / 60
+        val seconds = (secondsInput % 360) % 60
+
+        val h = if (hours < 10) "0$hours" else "$hours"
+        val m = if (minutes < 10) "0$minutes" else "$minutes"
+        val s = if (seconds < 10) "0$seconds" else "$seconds"
+
+        val time = "$h:$m:$s"
+
+        showProgressTextView.text = time
+    }
+
     private fun resetStopwatch() {
         numberOfSeconds = 0
         pauseButton.isEnabled = false
         resetButton.isEnabled = false
-        showProgressTextView.text = numberOfSeconds.toString()
+        formatStopwatchTime(numberOfSeconds)
     }
 
     override fun onDestroy() {
@@ -51,7 +65,7 @@ class MainActivity : AppCompatActivity() {
             super.onProgressUpdate(*values)
 
             numberOfSeconds++
-            showProgressTextView.text = numberOfSeconds.toString()
+            formatStopwatchTime(numberOfSeconds)
         }
 
         override fun doInBackground(vararg params: Unit?) {
@@ -67,7 +81,6 @@ class MainActivity : AppCompatActivity() {
             progressBar.visibility = View.INVISIBLE
             startButton.isEnabled = true
             pauseButton.isEnabled = false
-//            resetButton.isEnabled = true
         }
 
         /**
