@@ -3,6 +3,7 @@ package com.example.stopwatch
 import android.os.AsyncTask
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
+import android.view.View
 import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity() {
@@ -51,13 +52,27 @@ class MainActivity : AppCompatActivity() {
 
         override fun doInBackground(vararg params: Unit?) {
             while (true) {
-                if (this.isCancelled) {
-                    break
-                }
-
                 Thread.sleep(1000)
                 this.publishProgress()
             }
+        }
+
+        override fun onCancelled() {
+            super.onCancelled()
+
+            progressBar.visibility = View.INVISIBLE
+        }
+
+        override fun onPostExecute(result: Unit?) {
+            super.onPostExecute(result)
+
+            progressBar.visibility = View.INVISIBLE
+        }
+
+        override fun onPreExecute() {
+            super.onPreExecute()
+
+            progressBar.visibility = View.VISIBLE
         }
 
     }
