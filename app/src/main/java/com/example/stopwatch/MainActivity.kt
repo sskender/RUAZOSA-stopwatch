@@ -15,6 +15,8 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
+        resetStopwatch()
+
         startButton.setOnClickListener {
             stopwatchThread = DoInBackground()
             stopwatchThread?.execute()
@@ -33,6 +35,8 @@ class MainActivity : AppCompatActivity() {
 
     private fun resetStopwatch() {
         numberOfSeconds = 0
+        pauseButton.isEnabled = false
+        resetButton.isEnabled = false
         showProgressTextView.text = numberOfSeconds.toString()
     }
 
@@ -61,18 +65,28 @@ class MainActivity : AppCompatActivity() {
             super.onCancelled()
 
             progressBar.visibility = View.INVISIBLE
+            startButton.isEnabled = true
+            pauseButton.isEnabled = false
+//            resetButton.isEnabled = true
         }
 
+        /**
+         * this is never executed
+         *
         override fun onPostExecute(result: Unit?) {
-            super.onPostExecute(result)
+        super.onPostExecute(result)
 
-            progressBar.visibility = View.INVISIBLE
+        progressBar.visibility = View.INVISIBLE
         }
+         */
 
         override fun onPreExecute() {
             super.onPreExecute()
 
             progressBar.visibility = View.VISIBLE
+            startButton.isEnabled = false
+            pauseButton.isEnabled = true
+            resetButton.isEnabled = true
         }
 
     }
